@@ -1,26 +1,16 @@
 package handlers
 
 import (
-	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
+	"practicum/DataBaseConnect"
 
 	_ "github.com/lib/pq"
 )
 
 type Subject struct {
 	Subjects map[string]string `json:"subjects"`
-}
-
-var Db *sql.DB
-
-func InitDb() {
-	var err error
-	Db, err = sql.Open("postgres", "host=localhost port=5432 user=postgres password=postgres dbname=practicum sslmode=disable")
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func SubjectsHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +32,7 @@ func SubjectsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	query := "SELECT id_item, " + columnName + " FROM items"
-	rows, err := Db.Query(query)
+	rows, err := DataBaseConnect.Db.Query(query)
 	if err != nil {
 		http.Error(w, "Failed to query database", http.StatusInternalServerError)
 		log.Printf("Database query error: %v", err)
