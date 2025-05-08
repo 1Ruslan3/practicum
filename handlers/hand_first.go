@@ -23,15 +23,15 @@ func SubjectsHandler(w http.ResponseWriter, r *http.Request) {
 	var columnName string
 	switch locale {
 	case "en":
-		columnName = "name_en"
+		columnName = "english_name"
 	case "ru":
-		columnName = "name_ru"
+		columnName = "russian_name"
 	default:
 		http.Error(w, "Invalid locale parameter. Use 'ru' or 'en'", http.StatusBadRequest)
 		return
 	}
 
-	query := "SELECT id_item, " + columnName + " FROM items"
+	query := "SELECT id, " + columnName + " FROM subjects"
 	rows, err := DataBaseConnect.Db.Query(query)
 	if err != nil {
 		http.Error(w, "Failed to query database", http.StatusInternalServerError)
