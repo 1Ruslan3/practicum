@@ -11,11 +11,12 @@ var Db *sql.DB
 
 func InitDb() {
 	var err error
-	Db, err = sql.Open("postgres", "host=localhost port=5432 user=postgres password=postgres dbname=practicum sslmode=disable")
+	Db, err = sql.Open("postgres", "host=postgres port=5432 user=postgres password=postgres dbname=practicum sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	_, err = Db.Exec(`
 	CREATE TABLE programs(
     id INTEGER NOT NULL,
     code CHAR(8) NOT NULL,
