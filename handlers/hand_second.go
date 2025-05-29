@@ -48,7 +48,6 @@ func ProgramsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Получаем список всех программ
 	query := `
         SELECT 
             p.id, p.code, p.name, p.description, p.format_education,
@@ -75,7 +74,6 @@ func ProgramsHandler(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		// Получаем обязательные предметы для программы
 		subjQuery := `
             SELECT s.id
 			FROM program_subject ps
@@ -110,7 +108,6 @@ func ProgramsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Ответ в формате JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(results)
 }

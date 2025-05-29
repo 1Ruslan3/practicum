@@ -1,0 +1,3 @@
+docker-compose down
+rm -r pgdata
+docker-compose up --build -d
