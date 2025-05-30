@@ -19,7 +19,7 @@ func InitDb() {
 
 func MigrateDb() {
 	query := `
-	CREATE TABLE programs(
+	CREATE TABLE IF NOT EXISTS programs(
     	id INTEGER PRIMARY KEY NOT NULL,
     	code VARCHAR NOT NULL,
     	name VARCHAR NOT NULL,
@@ -27,13 +27,13 @@ func MigrateDb() {
     	format_education VARCHAR NOT NULL
 	);
 
-	CREATE TABLE subjects(
+	CREATE TABLE IF NOT EXISTS subjects(
 	    id VARCHAR(255) PRIMARY KEY NOT NULL,
 	    russian_name VARCHAR(32) NOT NULL,
 	    english_name VARCHAR(32) NOT NULL
 	);
 
-	CREATE TABLE program_subject(
+	CREATE TABLE IF NOT EXISTS program_subject(
 	    program_id INTEGER,
 	    subject_id VARCHAR,
 	    FOREIGN KEY (program_id) REFERENCES programs (id),
@@ -41,7 +41,7 @@ func MigrateDb() {
 	    PRIMARY KEY(program_id, subject_id)
 	);
 
-	CREATE TABLE passing_scores(
+	CREATE TABLE IF NOT EXISTS passing_scores(
 	    passing_score_id INTEGER PRIMARY KEY,
 	    program_id INTEGER NOT NULL,
 	    year INTEGER NOT NULL,
@@ -52,34 +52,31 @@ func MigrateDb() {
 	    FOREIGN KEY(program_id) REFERENCES programs(id)
 	);
 
-	CREATE TABLE subject_groups(
+	CREATE TABLE IF NOT EXISTS subject_groups(
 	    id SERIAL PRIMARY KEY,
 	    group_type VARCHAR NOT NULL
 	);
 
-	CREATE TABLE program_subject_groups(
-	    program_id INTEGER NOT NULL,
-	    group_id INTEGER NOT NULL,
+	CREATE TABLE IF NOT EXISTS program_subject_groups(
+	    program_id INTEGER,
+	    group_id INTEGER,
 	    PRIMARY KEY(program_id, group_id),
 	    FOREIGN KEY (program_id) REFERENCES programs(id),
 	    FOREIGN KEY (group_id) REFERENCES subject_groups(id)
 	);
 
-	CREATE TABLE subject_group_items(
-	    group_id INTEGER NOT NULL,
-	    subject_id VARCHAR(255) NOT NULL,
+	CREATE TABLE IF NOT EXISTS subject_group_items(
+	    group_id INTEGER,
+	    subject_id VARCHAR(255),
 	    PRIMARY KEY(group_id, subject_id),
 	    FOREIGN KEY(subject_id) REFERENCES subjects(id),
 	    FOREIGN KEY(group_id) REFERENCES subject_groups(id)
 	);
 
-	CREATE INDEX passing_scores_program_id_index ON 
+	CREATE INDEX IF NOT EXISTS passing_scores_program_id_index ON 
 	    passing_scores (program_id);
 
-	CREATE INDEX subject_scores_subject_id_index ON 
-	    subject_scores (subject_id);
-
-	CREATE INDEX programs_format_education_index ON
+	CREATE INDEX IF NOT EXISTS programs_format_education_index ON
 	    programs(format_education);
 	`
 
@@ -179,33 +176,8 @@ func DataFiling() {
 		(10, 'literature'),
 		(10, 'composition'),
 		(10, 'drawing');
-
-	INSERT INTO subject_group_items VALUES
-		(1, 'russian_language'),
-		(2, 'mathematics_is_specialized'),
-		(3, 'physics'),
-		(3, 'computer_science_and_ict'),
-		(4, 'physics'),
-		(4, 'chemistry'),
-		(4, 'computer_science_and_ict'),
-		(5, 'biology'),
-		(6, 'mathematics_is_specialized'),
-		(7, 'english_language'),
-		(7, 'geography'),
-		(7, 'computer_science_and_ict'),
-		(7, 'history'),
-		(7, 'social_studies'),
-		(8, 'social_studies'),
-		(9, 'english_language'),
-		(9, 'history'),
-		(10, 'history'),
-		(10, 'mathematics_is_specialized'),
-		(10, 'english_language'),
-		(11, 'literature'),
-		(12, 'composition'),
-		(12, 'drawing');
-
-	INSERT INTO subject_groups VALUES
+		
+		INSERT INTO subject_groups VALUES
 		(1, 'required'),
 		(2, 'required'),
 		(3, 'optional'),
@@ -218,6 +190,31 @@ func DataFiling() {
 		(10, 'optional'),
 		(11, 'required'),
 		(12, 'optional');
+		
+		INSERT INTO subject_group_items VALUES
+			(1, 'russian_language'),
+			(2, 'mathematics_is_specialized'),
+			(3, 'physics'),
+			(3, 'computer_science_and_ict'),
+			(4, 'physics'),
+			(4, 'chemistry'),
+			(4, 'computer_science_and_ict'),
+			(5, 'biology'),
+			(6, 'mathematics_is_specialized'),
+			(7, 'english_language'),
+			(7, 'geography'),
+			(7, 'computer_science_and_ict'),
+			(7, 'history'),
+			(7, 'social_studies'),
+			(8, 'social_studies'),
+			(9, 'english_language'),
+			(9, 'history'),
+			(10, 'history'),
+			(10, 'mathematics_is_specialized'),
+			(10, 'english_language'),
+			(11, 'literature'),
+			(12, 'composition'),
+			(12, 'drawing');
 
 	INSERT INTO program_subject_groups VALUES
 		(1, 1),
