@@ -51,7 +51,7 @@ func ProgramsHandler(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT
 		p.id, p.code, p.name, p.description, p.format_education,
-		ps.score_budget, ps.score_paid, ps.available_places, ps.education_price
+		ps.score_budget, ps.score_paid, ps.available_places, ps.year, ps.education_price
 		FROM programs p
 		JOIN passing_scores ps ON ps.program_id = p.id
 	`
@@ -68,14 +68,13 @@ func ProgramsHandler(w http.ResponseWriter, r *http.Request) {
 		var prog Program
 		err := rows.Scan(
 			&prog.ID, &prog.Code, &prog.Name, &prog.Description, &prog.FormatEducation,
-			&prog.ScoreBudget, &prog.ScorePaid, &prog.AvailablePlaces, &prog.EducationPrice,
+			&prog.ScoreBudget, &prog.ScorePaid, &prog.AvailablePlaces, &prog.Year, &prog.EducationPrice,
 		)
 		if err != nil {
 			log.Println("Error scanning program:", err)
 			continue
 		}
 
-		// Получение всех групп предметов для этой программы
 		groupQuery := `
 			SELECT sg.id, sg.group_type
 			FROM program_subject_groups psg
