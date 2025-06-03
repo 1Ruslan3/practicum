@@ -104,7 +104,7 @@ func DataFiling() {
 
     INSERT INTO subjects VALUES
 		('russian_language', 'Русский язык', 'Russian language'),
-		('mathematics_is_specialized', 'Математика', 'Mathematics is specialized'),
+		('mathematics_is_specialized', 'Математика (профильная)', 'Mathematics is specialized'),
 		('physics', 'Физика', 'Physics'),
 		('chemistry', 'Химия', 'Chemistry'),
 		('computer_science_and_ict', 'Информатика', 'Computer Science and ICT'),
@@ -112,7 +112,7 @@ func DataFiling() {
 		('social_studies', 'Обществознание', 'Social Studies'),
 		('english_language', 'Английский язык', 'English language'),
 		('biology', 'Биология', 'Biology'),
-		('basic_mathematics', 'Математика', 'Basic mathematics'),
+		('basic_mathematics', 'Математика (базовая)', 'Basic mathematics'),
 		('geography', 'География', 'Geography'),
 		('literature', 'Литература', 'Literature'),
 		('composition', 'Композиция', 'Composition'),
